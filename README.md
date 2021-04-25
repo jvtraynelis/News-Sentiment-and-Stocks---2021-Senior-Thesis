@@ -136,33 +136,19 @@ The components are derived by minimizing the quadratic loss function in this equ
 
 Traditionally a smoothing factor <img src="https://render.githubusercontent.com/render/math?math=\lambda = 1600"> is reserved for macro variables with quarterly data (Maravall 2001). Because the stock market contains cyclical patterns similar to those of other macro variables, the Hodrick-Prescott filter is still a viable approach using the smoothing factor <img src="https://render.githubusercontent.com/render/math?math=\lambda = 1600">. Stock data tends to have a larger cyclical component than the business cycle too, which further justifies the use of such a low smoothing factor (Adam 2019). For these reasons, not only can the Hodrick-Prescott filter be applied, but also does an excellent job of removing the noise and cyclical component while preserving the underlying signal. The image below shows this detrending in action for the S&P 500. The same procedure and smoothing factor was used on all indices, the S&P 500 is just one visual example. The signal extracted retains certain features of the original series, yet is also dramatically smoother. Using this filtered time series, the financial news immediately had stronger relationships with the news sentiment scores. 
 
-![](images/file%20name.png)
-
-
-
-\begin{figure}[H]
-    \centering
-    \resizebox{1\textwidth}{!}{\input{./Figures/SPY_hp_visualizations.pgf}}
-    \caption{Detrending Financial Data}
-    \label{fig:SPXhp}
-\end{figure}
-
-
+![](images/SPY_hp_visualizations.png)
 
 ### The Dependent Variable
-Because each financial time series data was non-stationary and had its own unique mean and variance, the dependent variable needed to be something comparable between assets. In alignment with Atkins' work predicting stock volatility and price using financial news, in which he concluded news data to be a very poor predictor of closing price, this study will take a similar approach and focus on predicting directional movement. A discrete binary variable indicating if the stock increased on a given day, was calculated. Denoted by $ P(Asset\:Increased)$, the dependent variable was equal to 1 if the stock did increase and 0 if not. This variable was based on the percent change calculated using the open and adjusted closing prices during regular trading hours after detrending the time series. If the stock price closed higher than it opened, after dividends and splits had been filtered out, then $P(Asset\:Increased = 1)$. Logistic regressions have interesting interpretations, namely the dependent variable becomes a probability distribution function that follows a Bernoulli distribution with probability $p_t$. One implication of using a linear probability model, however, is that the Gauss-Markov assumption of homoskedasticity quickly fails. Yet logistic models are still quite powerful way to study binary outcomes. The conditional expectation and conditional probability can then be written as 
+Because each financial time series data was non-stationary and had its own unique mean and variance, the dependent variable needed to be something comparable between assets. In alignment with Atkins' work predicting stock volatility and price using financial news, in which he concluded news data to be a very poor predictor of closing price, this study will take a similar approach and focus on predicting directional movement. A discrete binary variable indicating if the stock increased on a given day, was calculated. Denoted by <img src="https://render.githubusercontent.com/render/math?math=P(Asset\:Increased)">, the dependent variable was equal to 1 if the stock did increase and 0 if not. This variable was based on the percent change calculated using the open and adjusted closing prices during regular trading hours after detrending the time series. If the stock price closed higher than it opened, after dividends and splits had been filtered out, then <img src="https://render.githubusercontent.com/render/math?math=P(Asset\:Increased = 1)">. Logistic regressions have interesting interpretations, namely the dependent variable becomes a probability distribution function that follows a Bernoulli distribution with probability <img src="https://render.githubusercontent.com/render/math?math=p_t">. One implication of using a linear probability model, however, is that the Gauss-Markov assumption of homoskedasticity quickly fails. Yet logistic models are still quite powerful way to study binary outcomes. The conditional expectation and conditional probability can then be written as 
 
-\begin{equation}
-    E_{t-1}(y_t) = P_{t-1}(y_t = 1) = p_t
-\end{equation}
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=E_{t-1}(y_t) = P_{t-1}(y_t = 1) = p_t">
+</p>
 
-	After computing this discrete variable, indices were compared based on proportion of increases to decreases. Figure \ref{fig:dist} shows the distribution of days based on whether or not the index closed higher than it opened. This plot reveals key characteristics of each individual index that will be discussed later. Notice, however, that both the Russel 2000 and NASDAQ Biotech Index have considerably less up-days than their coutnerparties.
-\begin{figure}
-    \centering
-    \resizebox{0.75\textwidth}{!}{\input{./Figures/Trend Distribution.pgf}}
-    \caption{Distribution of Negative \& Positive Trading Days Per Asset}
-    \label{fig:dist}
-\end{figure}
+After computing this discrete variable, indices were compared based on proportion of increases to decreases. Figure \ref{fig:dist} shows the distribution of days based on whether or not the index closed higher than it opened. This plot reveals key characteristics of each individual index that will be discussed later. Notice, however, that both the Russel 2000 and NASDAQ Biotech Index have considerably less up-days than their coutnerparties.
+
+![](images/Trend_Distribution.png)
+
 
 
 
