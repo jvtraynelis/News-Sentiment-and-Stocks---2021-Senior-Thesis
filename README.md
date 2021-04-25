@@ -46,144 +46,100 @@ The scope of this study was limited to observing longer-term price developments 
 
 ### Sentiment Analysis
 
-Sentiment analysis has exploded over the past ten years in popularity, and is now frequently cited in the literature. What is meant by sentiment? Before proceeding, it is important to explain what sentiment is and how it could relate to prices. Investor sentiment can broadly range from and expectation of belief about the future price and risks of an asset that in not justified by the current set of facts \cite{baker2007investor}. When it comes to text-sentiment libraries, there are countless, highly-sophisticated libraries to choose from. Because headlines tend to be short in length, the sentiment analysis tool VADER (Valence Aware Dictionary and sEntiment Reasoner) was used to score the rating of each headline.  VADER is one of the more powerful Natural Language Processing libraries, and is trained on millions of short isolated texts. The library is also very commonly implemented in algorithmic trading strategies for its speed and versatility\cite{guidi2017extracting}. VADER is designed to measure both the intensity and sentiment of short, concise sentences. The mathematical derivations of sentiment scores will, however, be further discussed in the time-series analysis section of this methodology. It is most commonly used in analyzing tweets and online reviews, both of which tend to be comparable in length to news headlines. This characteristic is often cited as a reason why VADER also performs well on news headlines. And similar applications have been well-documented in the literature\cite{guidi2017extracting, schumaker2012evaluating}. While a large fraction of the literature on the subject favors automated,  machine learning models, there is still considerable insight that can be gained from using simpler, descriptive approaches to sentiment analysis. These techniques are elegantly laid out by Guidi in his 2017 paper on tweets and stock price prediction \cite{guidi2017extracting}.
+Sentiment analysis has exploded over the past ten years in popularity, and is now frequently cited in the literature. What is meant by sentiment? Before proceeding, it is important to explain what sentiment is and how it could relate to prices. Investor sentiment can broadly range from and expectation of belief about the future price and risks of an asset that in not justified by the current set of facts (Baker 2007). When it comes to text-sentiment libraries, there are countless, highly-sophisticated libraries to choose from. Because headlines tend to be short in length, the sentiment analysis tool VADER (Valence Aware Dictionary and sEntiment Reasoner) was used to score the rating of each headline.  VADER is one of the more powerful Natural Language Processing libraries, and is trained on millions of short isolated texts. The library is also very commonly implemented in algorithmic trading strategies for its speed and versatility (Guidi 2017). VADER is designed to measure both the intensity and sentiment of short, concise sentences. The mathematical derivations of sentiment scores will, however, be further discussed in the time-series analysis section of this methodology. It is most commonly used in analyzing tweets and online reviews, both of which tend to be comparable in length to news headlines. This characteristic is often cited as a reason why VADER also performs well on news headlines. And similar applications have been well-documented in the literature (Guidi 2017, Schumaker 2012). While a large fraction of the literature on the subject favors automated,  machine learning models, there is still considerable insight that can be gained from using simpler, descriptive approaches to sentiment analysis. These techniques are elegantly laid out by Guidi in his 2017 paper on tweets and stock price prediction (Guidi 2017).
 
-VADER measures the intensity and polarity of texts. It provides three polarity scores: A positive, negative, and neutral score where neutral is the complement to the sum of negative and positive scores. Each score is constrained between -4 and 4. VADER then computes a compound score which is the normalized sum of its positive and negative scores, shown in equation \ref{eq:VADERnormalization}, where x is the sum of valence scores. 
-\begin{equation}
-    x = VADER_{positive} + VADER_{negative}   
-\end{equation}
-The default normalization constant $\alpha = 15$ was used in this experiment, as recommended by the package. Thus the normalization equation applied in this experiment is shown in equation \ref{eq:VADERnormalization}.    
-\begin{equation}
-    x = \frac{x}{\sqrt{x^{2} + 15}}
-    \label{eq:VADERnormalization}
-\end{equation}
-Table \ref{tab:VADER} shows VADER's compound scoring system in action on a sample of 8 headlines. While VADER extracts some of the relevant sentiment, it is immediately apparent VADER has a limited comprehension of the complicated pandemic context. However, VADER does do an exceptional job identifying the intensity and polarity of vaccine headlines.
-\begin{table}[]
-    \centering
-    \begin{tabular}{lr}
-    \toprule
-    \textbf{Neutral:}\\
-    \midrule
-     Coronavirus Variant Is Indeed More Transmissible, New Study Suggests \\
-     Compound Rating: 0.0\\
-     
-     Becoming a Part of the Story \\
-     Compound Rating: 0.0 \\
-     
-    \toprule
-    \textbf{Positive:} \\
-    \midrule
-     New Pfizer Results: Coronavirus Vaccine Is Safe and 95\% Effective \\
-     Compound Rating: 0.718 \\
-     
-     The surge in coronavirus cases is helping speed up the development of vaccines. \\
-     Compound Rating: 0.296 \\
-     
-     A day of hope, and warning, as a vaccine is rolled out in the U.S. \\
-     Compound Rating: 0.128 \\
-     \toprule
-    \textbf{Negative:} \\
-    \midrule
-     How Bad Will the Coronavirus Outbreak Get? Here Are 6 Key Factors \\
-     Compound Rating: -0.542 \\
-     
-     America and the Virus: 'A Colossal Failure of Leadership' \\
-     Compound Rating: -0.511 \\
-     
-     Russia Is Slow to Administer Virus Vaccine Despite Kremlin's Approval \\
-     Compound Rating: -0.372 \\
-    \end{tabular}
-    \caption{VADER Compound Sentiment Scores}
-    \label{tab:VADER}
-\end{table}
+VADER measures the intensity and polarity of texts. It provides three polarity scores: A positive, negative, and neutral score where neutral is the complement to the sum of negative and positive scores. Each score is constrained between -4 and 4. VADER then computes a compound score which is the normalized sum of its positive and negative scores, shown in the following equation, where x is the sum of valence scores. 
+
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=x = VADER_{positive}%2BVADER_{negative}">
+</p>
+
+The default normalization constant <img src="https://render.githubusercontent.com/render/math?math=\alpha = 15"> was used in this experiment, as recommended by the package. Thus the normalization equation applied in this experiment is shown below.    
+
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=x = \frac{x}{\sqrt{x^{2} %2B 15}}">
+</p>
+    
+The Table below shows VADER's compound scoring system in action on a sample of 8 headlines. While VADER extracts some of the relevant sentiment, it is immediately apparent VADER has a limited comprehension of the complicated pandemic context. However, VADER does do an exceptional job identifying the intensity and polarity of vaccine headlines.
+
+Headline 						       | Compound Rating
+---------------------------------------------------------------|----------------------
+How Bad Will the Coronavirus Outbreak Get? Here Are 6 Key Factors | -0.542
+America and the Virus: ’A Colossal Failure of Leadership’ | -0.511
+Russia Is Slow to Administer Virus Vaccine Despite Kremlin’s Approval | -0.372
+Coronavirus Variant Is Indeed More Transmissible, New Study Suggests | 0.0
+Becoming a Part of the Story | 0.0
+A day of hope, and warning, as a vaccine is rolled out in the U.S. | 0.128
+The surge in coronavirus cases is helping speed up the development of vaccines. | 0.296
+New Pfizer Results: Coronavirus Vaccine Is Safe and 95% Effective | 0.718
 
 Although using the compound normalized sum of polarities is a common and easy way to obtain a snapshot of the overall sentiment in a given time period, it would be insufficient to discard the individual negative and positive ratings. This is for the simple reason that what might be good news for one index is not necessarily good for another. The set of stock indices chosen requires we consider the partial effects of both negative and positive news in addition to the normalized sum of the two. That said, neutral scores are also relevant to this experiment, perhaps best understood as a measure of no news. By considering each of VADER's negative, positive, compound, and neutral scores different hypotheses can be tested. For instance, is no news good news? Is negative vaccine news worse for biotech stocks? Does positive sentiment around monetary and fiscal stimulus lead to price increases? 
 
 ## Textual Analysis
 
-Removing stop words and lemmatization are two popular methods for extracting the significant words in text. To get an understanding of the text data and the common trends between narratives, the text data was first filtered. Stop words were removed and stemming was conducted to consolidate important terms that occurred most frequently in the data. Stop-words are the often-meaningless, yet frequent words that show up in text data (i.e. the, he, is, and etc.). Lemmatization reduces the amount of unique words by extracting the root term. For example, the two terms ``vaccines" and ``vaccinate" both refer to the same root ``vaccin" but without first stemming will be counted as two separate terms. The Lancaster stemming method, included in the Natural Language Took Kit Library (NLTK), is one of the more aggressive and was used in this textual analysis to group terms based on root. 
+Removing stop words and lemmatization are two popular methods for extracting the significant words in text. To get an understanding of the text data and the common trends between narratives, the text data was first filtered. Stop words were removed and stemming was conducted to consolidate important terms that occurred most frequently in the data. Stop-words are the often-meaningless, yet frequent words that show up in text data (i.e. the, he, is, and etc.). Lemmatization reduces the amount of unique words by extracting the root term. For example, the two terms "vaccines" and "vaccinate" both refer to the same root "vaccin" but without first stemming will be counted as two separate terms. The Lancaster stemming method, included in the Natural Language Took Kit Library (NLTK), is one of the more aggressive and was used in this textual analysis to group terms based on root. 
 
 
-Table \ref{tab: Freqs} shows the top-15 most frequent words in each of the two data sets after removing stop-words and stemming. The emphasized terms are uniquely more common to that narrative. Among the stimulus headlines, the roots ``econom", ``stimul", ``busy", and ``market" all appear in the top 15 most common roots. This proves that the filtering during data collection was successful in collecting headlines relevant to the targeted narrative. Similar patterns can be identified in the vaccine news data, where roots ``vaccin", ``cas" (as in cases), ``lockdown", and ``test" (as in testing) all appear in the top-15 most frequent terms. It's important to point out a few anomalies unique to this data set. You'll notice that the root ``hap" appears in the top-15 terms for both news groupings. The root ``hap" actually corresponds to the term happened. This is because both the New York Times and Guardian publishes several recurring, weekly summaries called ``As it Happened?" and ``How it happened". It's crucial to point out that these two lists do not provide any context relevant to the financial data, yet table \ref{tab: Freqs} still provides a useful overview of the semantic patterns in the news data. 
+The next table shows the top-15 most frequent words in each of the two data sets after removing stop-words and stemming. The emphasized terms are uniquely more common to that narrative. Among the stimulus headlines, the roots "econom", "stimul", "busy", and "market" all appear in the top 15 most common roots. This proves that the filtering during data collection was successful in collecting headlines relevant to the targeted narrative. Similar patterns can be identified in the vaccine news data, where roots "vaccin", "cas" (as in cases), "lockdown", and "test" (as in testing) all appear in the top-15 most frequent terms. It's important to point out a few anomalies unique to this data set. You'll notice that the root "hap" appears in the top-15 terms for both news groupings. The root "hap" actually corresponds to the term happened. This is because both the New York Times and Guardian publishes several recurring, weekly summaries called "As it Happened?" and "How it happened". It's crucial to point out that these two lists do not provide any context relevant to the financial data, yet thew table below still provides a useful overview of the semantic patterns in the news data. 
 
-\begin{table}[]
-% TK Bold rows with unique terms 
-    \centering
-    \begin{tabular}{ cc }
-        Stimulus News & Vaccine News \\ 
-        \centering
-        \begin{tabular}{lr}
-        \toprule
-              Word &  Frequency \\
-        \midrule
-         coronavir &        821 \\
-               hap &        576 \\
-            \textbf{econom} &        \textbf{452} \\
-             trump &        446 \\
-             covid &        291 \\
-             brief &        265 \\
-            \textbf{stimul} &        \textbf{259} \\
-               \textbf{fed} &        \textbf{255} \\
-                us &        246 \\
-               new &        244 \\
-              \textbf{busy} &        \textbf{232} \\
-               say &        224 \\
-            \textbf{market} &        \textbf{175} \\
-               \textbf{vir} &        \textbf{169} \\
-            pandem &        168 \\
-        \bottomrule
-        \end{tabular} &
-        \centering
-        \begin{tabular}{lr}
-            \toprule
-                  Word &  Frequency \\
-            \midrule
-             coronavir &       1261 \\
-                 covid &        856 \\
-                   hap &        843 \\
-                \textbf{vaccin} &        \textbf{750} \\
-                 trump &        438 \\
-                    uk &        356 \\
-                    us &        338 \\
-                   new &        326 \\
-                   \textbf{cas} &        \textbf{311} \\
-                 brief &        305 \\
-                   say &        298 \\
-              \textbf{lockdown} &        \textbf{220} \\
-                  \textbf{test} &        \textbf{167} \\
-                pandem &        158 \\
-               \textbf{austral} &        \textbf{157} \\
-            \bottomrule
-            \end{tabular}
-    \end{tabular}
-    \caption{Top 15 Most Frequent Words}{} \\
-    \label{tab: Freqs}
-\end{table}
+**Stimulus News** 
+Term | Frequency 
+-----|-----------|
+coronavir | 821 | 
+ hap | 576 | 
+econom | 452 | 
+trump | 446 | 
+covid | 291 |
+brief | 265 |
+stimul | 259 | 
+fed | 255| 
+us | 246 | 
+new | 244 | 
+busy | 232| 
+say | 224 | 
+market | 175| 
+vir | 169| 
+pandem | 168 |
 
-%\textit{TK Maybe I should Consider creating two tables-- eliminating words that are contained in both frequency tables and look at the unique trends between data sets (i.e remove covid/coronavirus/trump/US/UK)}
-
+**Vaccine News** 
+Term | Frequency|
+-----|----------|
+coronavir | 1261|
+covid | 856|
+hap | 843|        
+vaccin | 750|
+trump | 438|
+uk | 356|
+us | 338|
+new | 326|
+cas | 311|
+brief | 305|
+say | 298|
+lockdown | 220|
+test | 167|
+pandem | 158|
+austral | 157|
 
 ## Time Series Analysis
-
-
-
 ### Detrending Time Series Stock Data
 Because the focus of this project is primarily on determining which narrative has more explanatory power and not on predicting specific prices, the historical price data was detrended to maximize the relevant signal. Time series data poses several challenges, one of which is noise or cyclical trends that tend to obscure the underlying signal from being studied. The non-stationary, financial time-series data in this project were very noisy. 2020 was after all a year with record volatility levels. Fortunately, there are well established methods for detrending economic variables with heavy cyclical components. One especially popular method is the Hodrick-Prescott filter. This detrending method effectively decomposes a time series $y_t$ into a cyclical component $\zeta_t$ and trend $\tau_t$, shown below \cite{hodrick1997postwar}. 
-\begin{equation}
-    \begin{aligned}
-    y_t = \zeta_t + \tau_t, 
-    \hspace*{.5cm}
-    t = 1, 2, ... , T
-    \end{aligned}
-\end{equation}
-The components are derived by minimizing the quadratic loss function in equation \ref{eq:Hodrick-Prescott}, which minimizes the predictive accuracy lost from the model. The first term in the equation minimizes the variance of $\zeta_t$, and coefficient $\lambda$, or smoothing factor. The function simultaneously punishes a lack of smoothness in the second term. It's important to note that as $\lambda$ converges to zero, the trend $\tau_t$ becomes equal to the original time series $y_t$. Conversely, as $\lambda$ diverges to $\infty$, $\tau_t$ becomes linear. 
-\begin{equation}
-    \begin{aligned}
-    \label{eq:Hodrick-Prescott}
-    \min_{\tau_t} \sum_{t}^{T}\zeta_t^{2} + \lambda\sum_{t=1}^{T}{[(\tau_t - \tau_{t-1}) - (\tau_{t-1} - \tau_{t-2})]^{2}}
-    \end{aligned}
-\end{equation}
-Traditionally a smoothing factor $\lambda = 1600$ is reserved for macro variables with quarterly data \cite{maravall2001time}. Because the stock market contains cyclical patterns similar to those of other macro variables, the Hodrick-Prescott filter is still a viable approach using the smoothing factor $\lambda = 1600$. Stock data tends to have a larger cyclical component than the business cycle too, which further justifies the use of such a low smoothing factor \cite{adam2019stock}. For these reasons, not only can the Hodrick-Prescott filter be applied, but also does an excellent job of removing the noise and cyclical component while preserving the underlying signal. Figure \ref{fig:SPXhp} shows this detrending in action for the S\&P 500. The same procedure and smoothing factor was used on all indices, the S\&P 500 is just one visual example. In figure \ref{fig:SPXhp}, the signal extracted retains certain features of the original series, yet is also dramatically smoother. Using this filtered time series, the financial news immediately had stronger relationships with the news sentiment scores. 
+
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=y_t = \zeta_t %2B \tau_t">
+</p>
+
+The components are derived by minimizing the quadratic loss function in this equation, which minimizes the predictive accuracy lost from the model. The first term in the equation minimizes the variance of <img src="https://render.githubusercontent.com/render/math?math=\zeta_t">, and coefficient <img src="https://render.githubusercontent.com/render/math?math=\lambda">, or smoothing factor. The function simultaneously punishes a lack of smoothness in the second term. It's important to note that as <img src="https://render.githubusercontent.com/render/math?math=\lambda"> converges to zero, the trend <img src="https://render.githubusercontent.com/render/math?math=\tau_t"> becomes equal to the original time series $y_t$. Conversely, as <img src="https://render.githubusercontent.com/render/math?math=\lambda"> diverges to <img src="https://render.githubusercontent.com/render/math?math=\infty">, <img src="https://render.githubusercontent.com/render/math?math=\tau_t"> becomes linear. 
+
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\min_{\tau_t} \sum_{t}^{T}\zeta_t^{2} + \lambda\sum_{t=1}^{T}{[(\tau_t - \tau_{t-1}) - (\tau_{t-1} - \tau_{t-2})]^{2}}">
+</p>
+
+Traditionally a smoothing factor <img src="https://render.githubusercontent.com/render/math?math=\lambda = 1600"> is reserved for macro variables with quarterly data (Maravall 2001). Because the stock market contains cyclical patterns similar to those of other macro variables, the Hodrick-Prescott filter is still a viable approach using the smoothing factor <img src="https://render.githubusercontent.com/render/math?math=\lambda = 1600">. Stock data tends to have a larger cyclical component than the business cycle too, which further justifies the use of such a low smoothing factor (Adam 2019). For these reasons, not only can the Hodrick-Prescott filter be applied, but also does an excellent job of removing the noise and cyclical component while preserving the underlying signal. The image below shows this detrending in action for the S&P 500. The same procedure and smoothing factor was used on all indices, the S&P 500 is just one visual example. The signal extracted retains certain features of the original series, yet is also dramatically smoother. Using this filtered time series, the financial news immediately had stronger relationships with the news sentiment scores. 
+
+![](images/file%20name.png)
+
+
+
 \begin{figure}[H]
     \centering
     \resizebox{1\textwidth}{!}{\input{./Figures/SPY_hp_visualizations.pgf}}
