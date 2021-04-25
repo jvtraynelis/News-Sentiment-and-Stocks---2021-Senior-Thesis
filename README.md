@@ -147,7 +147,7 @@ Because each financial time series data was non-stationary and had its own uniqu
 
 After computing this discrete variable, indices were compared based on proportion of increases to decreases. Figure \ref{fig:dist} shows the distribution of days based on whether or not the index closed higher than it opened. This plot reveals key characteristics of each individual index that will be discussed later. Notice, however, that both the Russel 2000 and NASDAQ Biotech Index have considerably less up-days than their coutnerparties.
 
-![](images/Trend_Distribution.png)
+![](images/Trend%20Distribution.png)
 
 
 
